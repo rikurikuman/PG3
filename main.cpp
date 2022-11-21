@@ -1,103 +1,64 @@
 #include <iostream>
-#include <vector>
-#include <list>
+#include <string>
 
-using namespace std;
+class SceneManager final {
+private:
+	SceneManager() = default;
+	~SceneManager() = default;
+	SceneManager(const SceneManager& o) = delete;
+	SceneManager& operator=(const SceneManager& o) = delete;
 
-typedef vector<char> MyString;
+	int nowSceneNo = 0;
 
-MyString ConvertToMyString(const char* str) {
-	MyString myStr;
-
-	//雑に変換する
-	for (size_t i = 0; str[i] != '\0'; i++) {
-		myStr.push_back(str[i]);
+public:
+	static SceneManager* GetInstance() {
+		static SceneManager instance;
+		return &instance;
 	}
 
-	return myStr;
-}
+	constexpr static int maxSceneNo = 3;
+
+	bool ChangeScene(int sceneNo) {
+		if (sceneNo > maxSceneNo) {
+			nowSceneNo = -1;
+			return false;
+		}
+		nowSceneNo = sceneNo;
+		return true;
+	}
+
+	int GetNowSceneNo() {
+		return nowSceneNo;
+	}
+
+	std::string GetNowSceneName() {
+		switch (nowSceneNo) {
+		case 0:
+			return "Title";
+		case 1:
+			return "NewGame";
+		case 2:
+			return "GamePlay";
+		case 3:
+			return "GameClear";
+		default:
+			return "ErrorScene";
+		}
+	}
+};
 
 int main() {
-	list<MyString> stations{
-		ConvertToMyString("Tokyo"),
-		ConvertToMyString("Kanda"),
-		ConvertToMyString("Akihabara"),
-		ConvertToMyString("Okachimachi"),
-		ConvertToMyString("Ueno"),
-		ConvertToMyString("Uguisudani"),
-		ConvertToMyString("Nippori"),
-		ConvertToMyString("Tabata"),
-		ConvertToMyString("Komagome"),
-		ConvertToMyString("Sugamo"),
-		ConvertToMyString("Otsuka"),
-		ConvertToMyString("Ikebukuro"),
-		ConvertToMyString("Mejiro"),
-		ConvertToMyString("Takadanobaba"),
-		ConvertToMyString("Shin-Okubo"),
-		ConvertToMyString("Shinjuku"),
-		ConvertToMyString("Yoyogi"),
-		ConvertToMyString("Harajuku"),
-		ConvertToMyString("Shibuya"),
-		ConvertToMyString("Ebisu"),
-		ConvertToMyString("Meguro"),
-		ConvertToMyString("Gotanda"),
-		ConvertToMyString("Osaki"),
-		ConvertToMyString("Shinagawa"),
-		ConvertToMyString("Tamachi"),
-		ConvertToMyString("Hamamatsucho"),
-		ConvertToMyString("Shimbashi"),
-		ConvertToMyString("Yurakucho")
-	};
+	SceneManager* sceneManager = SceneManager::GetInstance();
 
-	cout << "==============================" << endl;
-	cout << "Yamanote Line 1970" << endl;
-	cout << "==============================" << endl;
-
-	//ぶん回す
-	for (auto itr = stations.begin(); itr != stations.end(); itr++) {
-		MyString str = *itr;
-		for (auto itr2 = str.begin(); itr2 != str.end(); itr2++) {
-			cout << *itr2;
+	while (true) {
+		std::cout << std::to_string(sceneManager->GetNowSceneNo()) + " : " + sceneManager->GetNowSceneName() + "\n";
+		std::cin.get();
+		if (sceneManager->GetNowSceneNo() + 1 > sceneManager->maxSceneNo) {
+			sceneManager->ChangeScene(0);
 		}
-		cout << endl;
-	}
-
-	//西日暮里、開業
-	auto itr = stations.begin();
-	//田端まで進めて挿入
-	while (*itr != ConvertToMyString("Tabata")) itr++;
-	stations.insert(itr, ConvertToMyString("Nishi-Nippori"));
-
-	cout << "==============================" << endl;
-	cout << "Yamanote Line 2019" << endl;
-	cout << "==============================" << endl;
-
-	//ぶん回す
-	for (auto itr = stations.begin(); itr != stations.end(); itr++) {
-		MyString str = *itr;
-		for (auto itr2 = str.begin(); itr2 != str.end(); itr2++) {
-			cout << *itr2;
+		else {
+			sceneManager->ChangeScene(sceneManager->GetNowSceneNo() + 1);
 		}
-		cout << endl;
-	}
-
-	//高輪ゲートウェイ、開業
-	itr = stations.begin();
-	//田町まで進めて挿入
-	while (*itr != ConvertToMyString("Tamachi")) itr++;
-	stations.insert(itr, ConvertToMyString("Takanawa-Gateway"));
-
-	cout << "==============================" << endl;
-	cout << "Yamanote Line 2022" << endl;
-	cout << "==============================" << endl;
-
-	//ぶん回す
-	for (auto itr = stations.begin(); itr != stations.end(); itr++) {
-		MyString str = *itr;
-		for (auto itr2 = str.begin(); itr2 != str.end(); itr2++) {
-			cout << *itr2;
-		}
-		cout << endl;
 	}
 
 	return 0;

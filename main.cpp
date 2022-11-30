@@ -95,7 +95,7 @@ int main() {
 			int i = 0;
 			for (auto itr = list.Begin(); itr != list.End(); itr++) {
 				cout << "  " << i << ": \"" << *itr << "\"";
-				if (i != list.Size()) {
+				if (i != list.Size() - 1) {
 					cout << ",";
 				}
 				cout << "\n";

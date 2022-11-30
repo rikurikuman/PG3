@@ -80,7 +80,7 @@ public:
 	List& operator=(List&& o) {
 		this->dummy = o.dummy;
 		o.dummy = nullptr;
-		return this;
+		return *this;
 	}
 
 	// 先頭要素を指すイテレータを取得

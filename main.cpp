@@ -1,319 +1,52 @@
 #include <iostream>
 #include <string>
 #include "List.h"
+#include "Enemy.h"
 
 using namespace std;
 
 int main() {
-	enum Scene {
-		Main,
-		View,
-		View_All,
-		View_Select,
-		Insert,
-		Edit,
-		Delete,
-		Swap
-	};
-
-	List<std::string> list;
-	int state = 0;
+	
+	Enemy enemy1 = Enemy(1);
+	Enemy enemy2 = Enemy(2);
+	Enemy enemy3 = Enemy(3);
 
 	while (true) {
-		if (state == Main) {
-			cout << "[—v‘f‚Ì‘€ì]\n";
-			cout << "1.—v‘f‚Ì•\Ž¦\n";
-			cout << "2.—v‘f‚Ì‘}“ü\n";
+		cout << "Enemy ID:1 ‚Í " << (enemy1.IsAlive() ? "¶‘¶" : "Ž€–S") << "‚µ‚Ä‚¢‚Ü‚·\n";
+		cout << "Enemy ID:2 ‚Í " << (enemy2.IsAlive() ? "¶‘¶" : "Ž€–S") << "‚µ‚Ä‚¢‚Ü‚·\n";
+		cout << "Enemy ID:3 ‚Í " << (enemy3.IsAlive() ? "¶‘¶" : "Ž€–S") << "‚µ‚Ä‚¢‚Ü‚·\n";
 
-			if (!list.Empty()) {
-				cout << "3.—v‘f‚Ì•ÒW\n";
-				cout << "4.—v‘f‚Ìíœ\n";
-			}
-
-			cout << "----------------------------------------\n";
-			cout << "‘€ì‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢\n";
-
-			string _input;
-			getline(cin, _input);
-
-			int input;
-			try {
-				input = stoi(_input);
-			}
-			catch (...) {
-				input = -1;
-			}
-
-			if (input == 1) {
-				state = View;
-			}
-			if (input == 2) {
-				state = Insert;
-			}
-			if (!list.Empty()) {
-				if (input == 3) {
-					state = Edit;
-				}
-				if (input == 4) {
-					state = Delete;
-				}
-			}
-		}
-		else if (state == View) {
-			cout << "[—v‘f‚Ì•\Ž¦]\n";
-			cout << "1.—v‘f‚Ìˆê——•\Ž¦\n";
-			cout << "2.ˆÊ’u‚ðŽw’è‚µ‚Ä—v‘f‚ð•\Ž¦\n";
-			cout << "0.—v‘f‚Ì‘€ì‚É–ß‚é\n";
-			cout << "----------------------------------------\n";
-			cout << "‘€ì‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢\n";
-
-			string _input;
-			getline(cin, _input);
-
-			int input;
-			try {
-				input = stoi(_input);
-			}
-			catch (...) {
-				input = -1;
-			}
-
-			if (input == 1) {
-				state = View_All;
-			}
-			if (input == 2) {
-				state = View_Select;
-			}
-			if (input == 0) {
-				state = Main;
-			}
-		}
-		else if (state == View_All) {
-			cout << "[—v‘f‚Ìˆê——•\Ž¦]\n";
-			cout << "—v‘fˆê——: {\n";
-
-			int i = 0;
-			for (auto itr = list.Begin(); itr != list.End(); itr++) {
-				cout << "  " << i << ": \"" << *itr << "\"";
-				if (i != list.Size() - 1) {
-					cout << ",";
-				}
-				cout << "\n";
-				i++;
-			}
-
-			cout << "}\n";
-			cout << "—v‘f”: " << list.Size() << "\n";
-			cout << "----------------------------------------\n";
-			cout << "1.—v‘f‚Ì•\Ž¦‚É–ß‚é\n";
-			cout << "2.—v‘f‚Ì‘€ì‚É–ß‚é\n";
-
-			while (true) {
-				string _input;
-				getline(cin, _input);
-
-				int input;
-				try {
-					input = stoi(_input);
-				}
-				catch (...) {
-					input = -1;
-				}
-
-				if (input == 1) {
-					state = View;
-					break;
-				}
-				if (input == 2) {
-					state = Main;
-					break;
-				}
-			}
-		}
-		else if (state == View_Select) {
-			cout << "•\Ž¦‚µ‚½‚¢—v‘f‚Ì”Ô†‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢\n";
-
-			string input;
-			getline(cin, input);
-
-			bool ok = true;
-			int index;
-			try {
-				index = stoi(input);
-			}
-			catch (...) {
-				ok = false;
-				cout << "•s³‚È’l‚ªŽw’è‚³‚ê‚Ü‚µ‚½\n";
-			}
-
-			if (ok) {
-				auto itr = list.At(index);
-				if (itr != list.End()) {
-					cout << " " << input << ": \"" << *itr << "\"\n";
-				}
-				else {
-					cout << "Žw’è”Ô†‚Ì—v‘f‚Í‚ ‚è‚Ü‚¹‚ñ\n";
-				}
-			}
-
-			cout << "----------------------------------------\n";
-			cout << "1.—v‘f‚Ì•\Ž¦‚É–ß‚é\n";
-			cout << "2.—v‘f‚Ì‘€ì‚É–ß‚é\n";
-
-			while (true) {
-				string _input;
-				getline(cin, _input);
-
-				int input;
-				try {
-					input = stoi(_input);
-				}
-				catch (...) {
-					input = -1;
-				}
-
-				if (input == 1) {
-					state = View;
-					break;
-				}
-				if (input == 2) {
-					state = Main;
-					break;
-				}
-			}
-		}
-		else if (state == Insert) {
-			cout << "—v‘f‚ð’Ç‰Á‚·‚éêŠ‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢BÅŒã”ö‚É’Ç‰Á‚·‚éê‡‚Í‰½‚à“ü—Í‚µ‚È‚¢‚Å‚­‚¾‚³‚¢\n";
-
-			string input;
-			getline(cin, input);
-
-			bool ok = true;
-			bool back = false;
-			size_t index = 0;
-
-			if (input.empty()) {
-				back = true;
-			}
-			else {
-				try {
-					index = stoull(input);
-					if (index >= list.Size()) {
-						ok = false;
-						cout << "ƒŠƒXƒg‚Ì”ÍˆÍŠO‚ªŽw’è‚³‚ê‚Ü‚µ‚½\n";
-					}
-				}
-				catch (...) {
-					ok = false;
-					cout << "•s³‚È’l‚ªŽw’è‚³‚ê‚Ü‚µ‚½\n";
-				}
-			}
-
-			if (ok) {
-				cout << "’Ç‰Á‚·‚é—v‘f‚Ì’l‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢\n";
-
-				string str;
-				getline(cin, str);
-
-				if (back) {
-					list.PushBack(str);
-					cout << "—v‘f\"" << str << "\"‚ªƒŠƒXƒg‚Ì––”ö‚É‘}“ü‚³‚ê‚Ü‚µ‚½\n";
-				}
-				else {
-					auto itr = list.At(index);
-					if (itr != list.End()) {
-						list.Insert(itr, str);
-						cout << "—v‘f\"" << str << "\"‚ª" << index << "”Ô–Ú‚É‘}“ü‚³‚ê‚Ü‚µ‚½\n";
-					}
-					else {
-						cout << index << "”Ô–Ú‚Í‘¶Ý‚µ‚Ü‚¹‚ñ\n";
-					}
-				}
-			}
-			
-			cout << "----------------------------------------\n";
-			cout << "Enter.–ß‚é\n";
-
-			string _input;
-			getline(cin, _input);
-			state = Main;
-		}
-		else if (state == Edit) {
-			cout << "•ÒW‚µ‚½‚¢—v‘f‚Ì”Ô†‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢\n";
-
-			string input;
-			getline(cin, input);
-
-			bool ok = true;
-			int index;
-			try {
-				index = stoi(input);
-			}
-			catch (...) {
-				ok = false;
-				cout << "•s³‚È’l‚ªŽw’è‚³‚ê‚Ü‚µ‚½\n";
-			}
-
-			if (ok) {
-				auto itr = list.At(index);
-				if (itr != list.End()) {
-					cout << "•ÏX‚·‚é—v‘f‚Ì’l‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢\n";
-
-					string str;
-					getline(cin, str);
-					*itr = str;
-					cout << index << "”Ô–Ú‚Ì—v‘f‚Ì’l‚ª\"" << *itr << "\"‚É•ÏX‚³‚ê‚Ü‚µ‚½\n";
-				}
-				else {
-					cout << "Žw’è”Ô†‚Ì—v‘f‚Í‚ ‚è‚Ü‚¹‚ñ\n";
-				}
-			}
-
-			cout << "----------------------------------------\n";
-			cout << "Enter.–ß‚é\n";
-
-			string _input;
-			getline(cin, _input);
-			state = Main;
-		}
-		else if (state == Delete) {
-			cout << "íœ‚µ‚½‚¢—v‘f‚Ì”Ô†‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢\n";
-
-			string input;
-			getline(cin, input);
-
-			bool ok = true;
-			int index;
-			try {
-				index = stoi(input);
-			}
-			catch (...) {
-				ok = false;
-				cout << "•s³‚È’l‚ªŽw’è‚³‚ê‚Ü‚µ‚½\n";
-			}
-
-			if (ok) {
-				auto itr = list.At(index);
-				if (itr != list.End()) {
-					string save = *itr;
-					list.Erase(itr);
-					cout << index << "”Ô–Ú‚Ì—v‘f\"" << save << "\"‚ðíœ‚µ‚Ü‚µ‚½\n";
-				}
-				else {
-					cout << "Žw’è”Ô†‚Ì—v‘f‚Í‚ ‚è‚Ü‚¹‚ñ\n";
-				}
-			}
-
-			cout << "----------------------------------------\n";
-			cout << "Enter.–ß‚é\n";
-
-			string _input;
-			getline(cin, _input);
-			state = Main;
+		if (!enemy1.IsAlive() && !enemy2.IsAlive() && !enemy3.IsAlive()) {
+			cout << "‘S‚Ä‚Ì“G‚ð”j‰ó‚µ‚Ü‚µ‚½\n";
+			break;
 		}
 
-		cout << "\n\n\n";
+		cout << "UŒ‚‚·‚éEnemy‚ÌID‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢\n";
+
+		string _input;
+		getline(cin, _input);
+
+		int input;
+		try {
+			input = stoi(_input);
+		}
+		catch (...) {
+			input = -1;
+		}
+
+		switch (input) {
+		case 1:
+			enemy1.Kill();
+			break;
+		case 2:
+			enemy2.Kill();
+			break;
+		case 3:
+			enemy3.Kill();
+			break;
+		}
 	}
-
+	
+	system("pause");
 	return 0;
 }

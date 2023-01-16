@@ -12,9 +12,9 @@ int main() {
 	Enemy enemy3 = Enemy(3);
 
 	while (true) {
-		cout << "Enemy ID:1 ‚Í " << (enemy1.IsAlive() ? "¶‘¶" : "€–S") << "‚µ‚Ä‚¢‚Ü‚·\n";
-		cout << "Enemy ID:2 ‚Í " << (enemy2.IsAlive() ? "¶‘¶" : "€–S") << "‚µ‚Ä‚¢‚Ü‚·\n";
-		cout << "Enemy ID:3 ‚Í " << (enemy3.IsAlive() ? "¶‘¶" : "€–S") << "‚µ‚Ä‚¢‚Ü‚·\n";
+		enemy1.Update();
+		enemy2.Update();
+		enemy3.Update();
 
 		if (!enemy1.IsAlive() && !enemy2.IsAlive() && !enemy3.IsAlive()) {
 			cout << "‘S‚Ä‚Ì“G‚ğ”j‰ó‚µ‚Ü‚µ‚½\n";

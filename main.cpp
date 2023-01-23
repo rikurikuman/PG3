@@ -1,52 +1,58 @@
 #include <iostream>
 #include <string>
 #include "List.h"
-#include "Enemy.h"
 
-using namespace std;
+class IShape {
+public:
+	virtual void size() = 0;
+	virtual void draw() = 0;
+
+protected:
+	float _size = 0;
+};
+
+class Circle : public IShape {
+public:
+	float r;
+
+	Circle(float r) : r(r) {}
+
+	void size() override {
+		_size = r * r * 3.14159265358979f;
+	}
+
+	void draw() override {
+		printf("circle size : %f\n", _size);
+	}
+};
+
+class Rectangle : public IShape {
+public:
+	float x;
+	float y;
+
+	Rectangle(float x, float y) : x(x), y(y) {}
+
+	void size() override {
+		_size = x * y;
+	}
+
+	void draw() override {
+		printf("rectangle size : %f\n", _size);
+	}
+};
 
 int main() {
-	
-	Enemy enemy1 = Enemy(1);
-	Enemy enemy2 = Enemy(2);
-	Enemy enemy3 = Enemy(3);
+	IShape* circle = new Circle(2);
+	IShape* rect = new Rectangle(5, 3);
 
-	while (true) {
-		enemy1.Update();
-		enemy2.Update();
-		enemy3.Update();
+	circle->size();
+	circle->draw();
+	rect->size();
+	rect->draw();
 
-		if (!enemy1.IsAlive() && !enemy2.IsAlive() && !enemy3.IsAlive()) {
-			cout << "‘S‚Ä‚Ì“G‚ð”j‰ó‚µ‚Ü‚µ‚½\n";
-			break;
-		}
-
-		cout << "UŒ‚‚·‚éEnemy‚ÌID‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢\n";
-
-		string _input;
-		getline(cin, _input);
-
-		int input;
-		try {
-			input = stoi(_input);
-		}
-		catch (...) {
-			input = -1;
-		}
-
-		switch (input) {
-		case 1:
-			enemy1.Kill();
-			break;
-		case 2:
-			enemy2.Kill();
-			break;
-		case 3:
-			enemy3.Kill();
-			break;
-		}
-	}
-	
+	delete circle;
+	delete rect;
 	system("pause");
 	return 0;
 }

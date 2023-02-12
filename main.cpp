@@ -1,58 +1,23 @@
 #include <iostream>
 #include <string>
-#include "List.h"
+#include "Util.h"
+#include "TaskSystem.h"
 
-class IShape {
-public:
-	virtual void size() = 0;
-	virtual void draw() = 0;
-
-protected:
-	float _size = 0;
-};
-
-class Circle : public IShape {
-public:
-	float r;
-
-	Circle(float r) : r(r) {}
-
-	void size() override {
-		_size = r * r * 3.14159265358979f;
-	}
-
-	void draw() override {
-		printf("circle size : %f\n", _size);
-	}
-};
-
-class Rectangle : public IShape {
-public:
-	float x;
-	float y;
-
-	Rectangle(float x, float y) : x(x), y(y) {}
-
-	void size() override {
-		_size = x * y;
-	}
-
-	void draw() override {
-		printf("rectangle size : %f\n", _size);
-	}
-};
+using namespace std;
 
 int main() {
-	IShape* circle = new Circle(2);
-	IShape* rect = new Rectangle(5, 3);
+	TaskSystem taskSystem;
 
-	circle->size();
-	circle->draw();
-	rect->size();
-	rect->draw();
+	Util::SendConsole("好き勝手にコマンドを入力してくれよな！！！\n", Util::ConsoleColor::Green);
 
-	delete circle;
-	delete rect;
+	while (true) {
+		Util::SendConsole("> ", Util::ConsoleColor::White);
+        string inputstr;
+        getline(cin, inputstr);
+
+		taskSystem.ExecuteCommand(inputstr);
+	}
+
 	system("pause");
 	return 0;
 }
